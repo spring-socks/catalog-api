@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: maven-test-pipeline
+  name: maven-jdk-17-test-pipeline
   labels:
     apps.tanzu.vmware.com/pipeline: test
     apps.tanzu.vmware.com/language: maven-jdk-17
