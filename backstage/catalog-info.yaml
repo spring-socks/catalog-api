@@ -30,4 +30,4 @@ spec:
   lifecycle: experimental
   owner: spring-socks
   definition:
-    $text: https://catalog-api-playground.apps.jaguchi.maki.lol/openapi/doc.yml
+    $text: https://raw.githubusercontent.com/spring-socks/catalog-api/main/src/main/resources/static/openapi/doc.yml
