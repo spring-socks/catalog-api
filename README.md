@@ -1,6 +1,8 @@
 # catalog-api
 Catalog API
 
+[![CI](https://github.com/spring-socks/catalog-api/actions/workflows/ci.yaml/badge.svg)](https://github.com/spring-socks/catalog-api/actions/workflows/ci.yaml)
+
 ## How to run locally
 
 Run postgresql
