@@ -5,7 +5,7 @@ Catalog API
 
 Run postgresql
 
-```yaml
+```
 docker-compose up
 ```
 
@@ -22,13 +22,14 @@ Run the app
 
 ## Deploy to Tanzu Application Platform
 
-> ℹ️ basic ootb supply chain is expected to be installed.
+> ℹ️ `basic` or `testing` ootb supply chain is expected to be installed.
 
 ```
 NAMESPACE=...
 kubectl create ns ${NAMESPACE} --dry-run=client -oyaml | kubectl apply -f-
 kubectl apply -f postgresql.yaml -n ${NAMESPACE}
 kubectl wait --for=condition=Available=true deploy/catalog-db -n ${NAMESPACE}
+kubectl apply -f pipeline.yaml -n ${NAMESPACE}
 kubectl apply -f workload.yaml -n ${NAMESPACE}
 # show logs
 stern -n ${NAMESPACE} catalog-api
