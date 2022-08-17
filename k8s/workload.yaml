@@ -1,0 +1,40 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    app.kubernetes.io/part-of: catalog-api
+    apps.tanzu.vmware.com/workload-type: web
+  name: catalog-api
+spec:
+  source:
+    git:
+      url: https://github.com/spring-socks/catalog-api
+      ref:
+        branch: main
+  env:
+  - name: JAVA_TOOL_OPTIONS
+    value: "-XX:ReservedCodeCacheSize=32M -Xss512k -Duser.timezone=Asia/Tokyo -Duser.language=ja -Duser.country=JP -Dfile.encoding=UTF-8"
+  - name: BPL_JVM_THREAD_COUNT
+    value: "28"
+  build:
+    env:
+    - name: BP_JVM_VERSION
+      value: "17.*"
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+      prometheus.io/path: /actuator/prometheus
+      prometheus.io/port: "8081"
+      prometheus.io/scrape: "true"
+  resources:
+    limits:
+      memory: 256Mi
+    requests:
+      memory: 256Mi
+  serviceClaims:
+  - name: catalog-db
+    ref:
+      apiVersion: v1
+      kind: Secret
+      name: catalog-db

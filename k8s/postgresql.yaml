@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: catalog-db
+  labels:
+    app.kubernetes.io/part-of: catalog-db
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1G
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-db
+  labels:
+    app.kubernetes.io/part-of: catalog-db
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: catalog-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/part-of: catalog-db
+    spec:
+      initContainers:
+      - name: remove-lost-found
+        image: busybox
+        command:
+        - sh
+        - -c
+        - |
+          rm -fr /var/lib/postgresql/data/lost+found
+        volumeMounts:
+        - name: catalog-db
+          mountPath: /var/lib/postgresql/data
+      containers:
+      - image: bitnami/postgresql:14
+        name: postgres
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: catalog-db
+              key: database
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: catalog-db
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: catalog-db
+              key: password
+        ports:
+        - containerPort: 5432
+          name: catalog-db
+        volumeMounts:
+        - name: catalog-db
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: catalog-db
+        persistentVolumeClaim:
+          claimName: catalog-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-db
+  labels:
+    app.kubernetes.io/part-of: catalog-db
+spec:
+  ports:
+  - port: 5432
+  selector:
+    app.kubernetes.io/part-of: catalog-db
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalog-db
+  labels:
+    app.kubernetes.io/part-of: catalog-db
+type: servicebinding.io/postgresql
+stringData:
+  type: postgresql
+  host: catalog-db
+  port: "5432"
+  username: socks
+  password: socks
+  database: catalog
