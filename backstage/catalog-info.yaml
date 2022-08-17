@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: catalog-api
+  description: Catalog API
+  tags:
+  - spring-socks
+  - java
+  - spring
+  - web
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=catalog-api'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team
