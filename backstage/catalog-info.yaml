@@ -13,4 +13,21 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: default-team
+  owner: spring-socks
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: catalog-api
+  description: Catalog API
+  tags:
+  - spring-socks
+  - java
+  - spring
+  - web
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: spring-socks
+  definition:
+    $text: http://catalog-api.playground.svc.cluster.local/openapi/doc.yml
