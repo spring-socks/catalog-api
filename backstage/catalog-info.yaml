@@ -15,19 +15,19 @@ spec:
   lifecycle: experimental
   owner: spring-socks
 ---
-apiVersion: backstage.io/v1alpha1
-kind: API
-metadata:
-  name: catalog-api
-  description: Catalog API
-  tags:
-  - spring-socks
-  - java
-  - spring
-  - web
-spec:
-  type: openapi
-  lifecycle: experimental
-  owner: spring-socks
-  definition:
-    $text: https://raw.githubusercontent.com/spring-socks/catalog-api/main/src/main/resources/static/openapi/doc.yml
+#apiVersion: backstage.io/v1alpha1
+#kind: API
+#metadata:
+#  name: catalog-api
+#  description: Catalog API
+#  tags:
+#  - spring-socks
+#  - java
+#  - spring
+#  - web
+#spec:
+#  type: openapi
+#  lifecycle: experimental
+#  owner: spring-socks
+#  definition:
+#    $text: https://raw.githubusercontent.com/spring-socks/catalog-api/main/src/main/resources/static/openapi/doc.yml
