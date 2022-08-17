@@ -1,0 +1,157 @@
+servers:
+- description: Local
+  url: 'http://localhost:5001'
+components:
+  schemas:
+    CountResponse:
+      type: object
+      properties:
+        size:
+          format: int64
+          type: integer
+      x-tags:
+      - Catalog
+    ItemResponse:
+      type: object
+      x-tags:
+      - Catalog
+      properties:
+        count:
+          description: Product count
+          format: int32
+          type: integer
+        description:
+          description: Product description
+          type: string
+        id:
+          type: string
+          description: Product identifier
+          format: uuid
+        imageUrl:
+          description: A list of product image URLs
+          type: array
+          items:
+            type: string
+        name:
+          description: Product name
+          type: string
+        price:
+          type: number
+          description: Product price
+        tag:
+          description: Product tags
+          type: array
+          items:
+            type: string
+    TagsResponse:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+      x-tags:
+      - Catalog
+info:
+  contact: { }
+  description: Catalog API
+  license:
+    name: Apache 2.0
+  title: 'Spring Socks: Catalog API'
+  version: 0.0.1-SNAPSHOT
+openapi: 3.0.1
+paths:
+  /catalogue:
+    get:
+      parameters:
+      - in: query
+        name: order
+        schema:
+          default: price
+          type: string
+      - in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - in: query
+        name: size
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - in: query
+        name: tags
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ItemResponse'
+                type: array
+          description: OK
+      summary: Return items
+      operationId: get-items
+      tags:
+      - Catalog
+  /catalogue/size:
+    get:
+      parameters:
+      - in: query
+        name: tags
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+          description: OK
+      summary: Return item count
+      operationId: get-item-count
+      tags:
+      - Catalog
+  '/catalogue/{id}':
+    get:
+      responses:
+        '200':
+          description: if items are found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+        '404':
+          description: if items do not exist
+      summary: Return a item
+      operationId: get-item
+      tags:
+      - Catalog
+    parameters:
+    - schema:
+        type: string
+        format: uuid
+      name: id
+      in: path
+      required: true
+  /tags:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse'
+          description: OK
+      summary: Return all tags
+      operationId: get-tags
+      tags:
+      - Catalog

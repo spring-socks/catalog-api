@@ -1,0 +1,10 @@
+version: "2"
+services:
+  catalog-db:
+    image: bitnami/postgresql:14
+    ports:
+    - "15432:5432"
+    environment:
+      POSTGRES_DB: catalog
+      POSTGRES_USER: socks
+      POSTGRES_PASSWORD: socks
